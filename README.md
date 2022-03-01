@@ -122,6 +122,7 @@
 
 ## 터미널 명령어
 
+- git pull
 - git add .
 - git commit -m "`이름` : `내용`"
 - git push origin main
