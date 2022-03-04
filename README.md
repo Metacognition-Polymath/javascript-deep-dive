@@ -11,8 +11,16 @@
   - 주말 및 공유일 제외
 
 - 진행
+
   - 22:00 ~ 23:00 => 모여서 공부
   - 23:00 ~ 23:30 => 토론
+
+- 장소
+
+  - [게더타운](https://app.gather.town/app/zvVfLbjGc6DVVluv/DeepDiveStudy)
+
+- 소통 채널
+  - [디스코드](https://discord.gg/hnTWXmsg)
 
 <details>
 <summary>들어가며</summary>
