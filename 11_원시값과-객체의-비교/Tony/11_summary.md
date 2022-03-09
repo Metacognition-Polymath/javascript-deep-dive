@@ -50,10 +50,14 @@ str[0] = "A"; // 'String' 형식의 인덱스 시그니처는 읽기만 허용�
 ```js
 var person = {
   name: "Lee",
+  study: {
+    member: ["a", "b"],
+    time: "22시",
+  },
 };
 
 var shallowCopy = person; // 얕은 복사
-var deepCopy = { ...person }; // 깊은 복사
+var deepCopy = { ...person }; // 깊은 복사가 될 수도 있고 얕은 복사가 될 수도 있다 - depth 및 그 프로퍼티의 값에 따라
 
 shallowCopy === person; // true
 deepCopy === person; // false
