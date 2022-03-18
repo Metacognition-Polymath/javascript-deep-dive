@@ -112,14 +112,137 @@ console.log(me.constructor === Person);
 
 ## 19.8 오버라이딩과 프로퍼티 섀도잉
 
+- 오버라이딩 : 상위 클래스가 가지고 있는 메서드를 하위 클래스가 재정의하여 사용하는 방식
+- 오버로딩 : 함수의 이름은 동일하지만 매개변수의 타입 또는 개수가 다른 메서드를 구현하고 매개변수에 의해 메서드를 구별하여 호출하는 방식
+  - 자바스크립트는 오버로딩을 지원하지 않지만 arguments 객체를 사용하여 구현가능
+  - 식별자 중복되면 에러 뜸 -> 안됨
+
 ## 19.9 프로토타입의 교체
+
+- 프로토타입은 임의의 다른 객체로 변경될 수 있다
+
+  - 부모객체를 동적으로 변경할 수 있다
+
+- 프로토타입 교체를 통해 객체 간의 상속 관계를 동적으로 변경하는 것은 하지 않는 것이 좋다
 
 ## 19.10 instanceof 연산자
 
+```js
+`객체` instanceof `생성자 함수`; // => boolean
+```
+
+```js
+// 예제 19_49. instanceof 연산자를 함수로 구현하기
+function isInstanceof(instance, constructor) {
+  const prototype = Object.getPrototypeOf(instance);
+
+  // 재귀 탈출 조건
+  // prototype이 null이면 프로토타입 체인의 종점에 다다른 것이다.
+  if (prototype === null) {
+    return false;
+  }
+
+  return (
+    prototype === constructor.prototype || isInstanceof(prototype, constructor)
+  );
+}
+```
+
 ## 19.11 직접 상속
+
+- Object.create 메서드
+- `__proto__`에 의한 직접 상속
+  - getter, setter 로 구현되어 있음, 프로토타입을 직접 지정 가능
 
 ## 19.12 정적 프로퍼티/메서드
 
+- 정적(static) 프로퍼티/메서드는 생성자 함수로 인스턴스를 생성하지 않아도 참조/호출할 수 있는 프로퍼티/메서드를 말한다.
+
+```js
+// 생성자 함수
+function Person(name) {
+  this.name = name;
+}
+
+// 프로토타입 메서드
+Person.prototype.sayHello = function () {
+  console.log(`Hi! I'm ${this.name}`);
+};
+
+// 정적 프로퍼티
+Person.staticProp = "static prop";
+
+// 정적 메서드
+Person.staticMethod = function () {
+  console.log("staticMethod");
+};
+
+const me = new Person("tony");
+
+Person.staticMethod(); // 'staticMethod';
+
+me.staticMethod(); // TypeError: me.staticMethod is not a function
+```
+
+- 정적 프로퍼티/메서드는 생성자 함수가 아닌 인스턴스로 참조/호출할 수 없다
+
 ## 19.13 프로퍼티 존재 확인
 
+### in 연산자
+
+- in 연산자는 객체 내 특정 프로퍼티가 존재하는지 여부를 확인한다.
+
+```js
+// key in object
+// 예제 19-59
+const person = {
+  name: "Tony",
+  address: "Seoul",
+};
+
+console.log("name" in person); // true
+console.log("age" in person); // false
+```
+
+### Object.prototype.hasOwnProperty 메서드
+
+```js
+// 예제 19-62
+const person = {
+  name: "Tony",
+  address: "Seoul",
+};
+console.log(person.hasOwnProperty("name")); // true
+```
+
 ## 19.14 프로퍼티 열거
+
+- for ... in
+- 객체의 모든 프로퍼티를 순회하며 열거(enumeration)하려면 for ... in 문을 사용한다.
+
+```js
+// for (변수선언문 in 객체) {...}
+// 예제 19-64. for ... in
+const person = {
+  name: "Tony",
+  address: "Seoul",
+};
+
+for (const key in person) {
+  console.log(key + ": " + person[key]);
+}
+```
+
+### Object.keys / values / entries 메서드
+
+for ... in 보다 Object.keys/values/entries 메서드를 사용하는 것을 권장한다
+
+```js
+// 예제 19-74
+const person = {
+  name: "Tony",
+  address: "Seoul",
+};
+
+Object.entries(person).forEach(([key, value]) => console.log(key, value));
+```
