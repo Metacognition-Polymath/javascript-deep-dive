@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  closure
+  <script>
+    function foo() {
+      const x = 1;
+      const y = 2;
+
+      // 일반적으로 클로저라고 하지 않는다
+      function bar() {
+        const z = 3;
+
+        debugger;
+        // 상위 스코프의 식별자를 참조하지 않는다.
+        console.log(z);
+
+        // 상위 스코프를 참조하고 있는 함수를 클로저라 한다.
+        console.log(x);
+      }
+
+      return bar;
+    }
+
+    const bar = foo();
+    bar();
+  </script>
+</body>
+</html>
