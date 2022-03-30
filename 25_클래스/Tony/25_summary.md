@@ -119,3 +119,109 @@ const Person = class {};
 ### 클래스 필드 정의 제안
 
 ### static 필드 정의 제안
+
+## 25.8 상속에 의한 클래스 확장
+
+### 25.8.1 클래스 상속과 생성자 함수 상속
+
+- 상속 받은 서브클래스가 constructor를 생략하면
+
+```js
+constructor(...args) {super(...args)}
+```
+
+- 이와 같은 constructor가 암묵적으로 정의 된다
+
+### 25.8.5 super 키워드
+
+- 함수처럼 호출할 수도 있고 this와 같이 식별자 처럼 참조할 수 있는 특수한 키워드다.
+  - super를 호출하면 부모클래스의 constructor를 호출한다
+  - super를 참조하면 부모클래스의 메서드를 호출할 수 있다
+
+```js
+class Base {
+  constructor(a, b) {
+    this.a = a;
+    this.b = b;
+  }
+}
+
+class Derived extends Base {
+  // 암묵적으로 constructor(...args) {super(...args)} 가 정의된다
+}
+
+const derived = new Derived(1, 2); // 서브클래스의 암묵적인 생성자에 의해 부모로 전달된다
+```
+
+```js
+class Base {
+  constructor(a, b) {
+    this.a = a;
+    this.b = b;
+  }
+}
+
+class Derived extends Base {
+  constructor(a, b, c) {
+    super(1, 2);
+    this.c = c;
+  }
+}
+
+const derived = new Derived(1, 2, 3);
+```
+
+- 부모에게 1, 2를 전달하고 3은 자식 클래스에 전달된다
+
+#### super를 호출할 때 주의할 사항
+
+1. 서브클래스에서 constructor를 생략하지 않는 경우
+
+   - 서브클래스의 constructor에서는 반드시 super를 호출해야 한다.
+
+2. 서브클래스의 constructor에서 super를 호출하기 전에는 this를 참조할 수 없다.
+
+3. super는 반드시 서브클래스의 constructor에서만 호출한다.
+   서브 클래스가 아닌 클래스의 constructor나 함수에서 super를 호출하면 에러가 발생한다.
+
+#### super 참조
+
+- 메서드 내에서 super를 참조하면 수퍼클래스의 메서드를 호출할 수 있다
+
+1. 서브클래스의 프로토타입 메서드 내에서 super.sayHi는 수퍼클래스의 프로토타입 메서드 sayHi를 가리킨다
+
+```js
+class Base {
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayHi() {
+    return `Hi ${this.name}`;
+  }
+}
+
+class Derived extends Base {
+  sayHi() {
+    return `${super.sayHi()}. how are you doing?`; // 부모 메서드의 결과에 추가로 연산이 필요할 때 주로 사용하는 듯
+  }
+}
+
+const derived = new Derived("Tony");
+console.log(derived.sayHi()); // Hi Tony. how are you doing?
+```
+
+### 25.8.6 상속 클래스의 인스턴스 생성 과정
+
+### 25.8.7 표준 빌트인 생성자 함수 확장
+
+```js
+class MyArray extends Array {
+  static get [Symbol.species]() {
+    return Array;
+  }
+  uniq() {
+    return this.filter((v, i, self) => self.indexOf(v) === i);
+  }
+}
+```
