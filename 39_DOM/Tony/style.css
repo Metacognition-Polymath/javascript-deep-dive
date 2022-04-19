@@ -1,0 +1,28 @@
+#colorList {
+  padding: 1rem;
+  background-color: bisque;
+}
+
+.item {
+  padding: 10px;
+  background-color: lightgray;
+  margin-bottom: 4px;
+}
+
+.red {
+  padding: 10px;
+  background-color: red;
+}
+.blue {
+  padding: 10px;
+  background-color: blue;
+}
+.green {
+  padding: 10px;
+  background-color: green;
+}
+
+.item__span {
+  width: 50px;
+  display: inline-block;
+}

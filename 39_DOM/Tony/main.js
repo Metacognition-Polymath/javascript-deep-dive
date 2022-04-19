@@ -12,3 +12,24 @@ console.log(divInGlobal);
 const divInGlobalElement = document.getElementById("divInGlobal");
 
 console.log(divInGlobalElement);
+
+// const redDivs = document.getElementsByClassName("red");
+// const redDiv = document.getElementById("red");
+
+// const redDivsByQS = document.querySelectorAll(".red");
+// const redDivByQS = document.querySelector(".red");
+
+const colorList = document.getElementById("colorList");
+
+colorList.addEventListener("click", (event) => {
+  const matchesMain = event.target.matches(".main");
+  const matchesRed = event.target.matches(".red");
+  const closestMain = event.target.closest(".main");
+  const closestRed = event.target.closest(".red");
+
+  console.log("matchesMain", matchesMain);
+  console.log("matchesRed", matchesRed);
+  console.log("closestMain", closestMain);
+  console.log("closestRed", closestRed);
+});
+// matches, closest 둘다 자신 포함 부모에서 검색

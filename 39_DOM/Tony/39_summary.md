@@ -82,3 +82,90 @@ const el = document.querySelector(".header__menu");
 - getElementById가 querySelector보다 조금 더 빠르기 때문에 id로 가져올 땐 getElementById를 이용하자
 
 - querySelectorAll 메서드는 DOM 컬렉션 객체, NodeList를 반환(유사 배열, 이터러블)
+
+### 특정 요소 노드를 취득할 수 있는지 확인
+
+Element.prototype.matches
+
+- CSS 선택자를 통해 특정 요소 노드를 취득할 수 있는지 확인한다
+- 이벤트 버블링을 통해 서칭 후 이벤트 위임
+
+### HTMLCollection vs. NodeList
+
+- HTMLCollection는 실시간으로 반영하는 live(살아있는) DOM 컬렉션 객체이다
+  - getElementBy{something} : HTMLCollection을 반환
+- NodeList
+
+  - 대부분(?) 실시간이 아닌 과거 정적 상태를 유지(non-live객체)
+  - querySelectorAll : NodeList를 반환
+
+- 책의 예제 39-18 신기함 : live dom이 뭔지 확인 가능
+
+#### NodeList
+
+- non-live 객체이지만 `childNodes` 프로퍼티가 반환하는 NodeList 객체는 HTMLCollection 객체와 같이
+  실시간으로 노드 객체 상태를 반영하는 `live 객체`로 동작
+- 노드 객체의 상태 변경과 상관없이 안전하게 DOM 컬렉션을 사용하려면
+  사용할 때 마다 Array.from 메서드를 사용하여 간단히 배열로 반환할 수 있다
+
+#### live 객체 원리 추정
+
+- 주소값이 직접 연결된(포인터) 참조 객체로 추정된다
+  - 브라우저 엘리먼트와 DOM객체가 같은 객체를 바라고보 있어서 그런 것 같다
+  - NodeList는 얕은 복사를 해서 1depth는 주소값이 다르지만 nested된 childNodes는 같은 주소를 바라보고 있어서 그런것으로 추정된다
+
+## 39.3 노드 탐색
+
+- parentNode, previousSibling, firstChild, childNodes는 Node.prototype이 제공
+- previousElementSibling 같이 Element가 포함된 프로퍼티 또는 children 프로퍼티는 Element.prototype이 제공한다
+  - 위 노드 탐색 프로퍼티는 setter 없이 getter만 존재하여 읽기는 가능하지만 쓰기는 무시된다
+
+### 공백노드
+
+- HTML문서의 가독성을 위해 포매팅하여 줄바꿈, 탭 등은 공백노드를 생성한다
+  - 하지만 그렇다고 공백노드를 없애기 위해 가독성을 포기하는 것은 권장하지 않는다
+
+### 자식 노드 탐색
+
+- Node.prototype.childNodes
+- Element.prototype.children
+- ... 등
+
+### 자식 노드 존재 확인
+
+- Node.prototype.hasChildNodes
+
+### 버블링하면서 찾기
+
+- Element.closest()
+
+```html
+<main class="main">
+  <ul id="colorList">
+    <li class="red">red</li>
+    <li class="blue">blue</li>
+    <li class="green">green</li>
+  </ul>
+</main>
+```
+
+```js
+const colorList = document.getElementById("colorList");
+
+colorList.addEventListener("click", (event) => {
+  const matchesMain = event.target.matches(".main");
+  const matchesRed = event.target.matches(".red");
+  const closestMain = event.target.closest(".main");
+  const closestRed = event.target.closest(".red");
+
+  console.log("matchesMain", matchesMain);
+  console.log("matchesRed", matchesRed);
+  console.log("closestMain", closestMain);
+  console.log("closestRed", closestRed);
+});
+```
+
+- Element.matches : EventTarget과 정확히 일치
+- Element.closest : Bubbling되면서 자신을 포함, 부모노드로 올라가면서 일치하는 것을 찾음
+- ![](./match_closest.png)
+  - ul영역을 클릭했을 때
