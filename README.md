@@ -119,8 +119,9 @@
 - [x] 45. 프로미스 - 2022.04.26
 - [x] 46. 제너레이터와 async/await - 2022.04.26
 - [x] 47. 에러 처리 - 2022.04.26
-- [ ] 48. 모듈
-- [ ] 49. Babel과 Webpack을 이용한 ES6+/ES.NEXT 개발 환경 구축
+- [x] 48. 모듈
+- [x] 49. Babel과 Webpack을 이용한 ES6+/ES.NEXT 개발 환경 구축
+- [x] 50. SPA
 
 # commit 및 push 방법
 
